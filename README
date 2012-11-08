@@ -3,16 +3,16 @@
   :...: :. .: :...:
   :   : :   : :
 
-  ---- Hands-on service state management
+  ---- Hackable service state management
        for your development environments.
 
   Synopsis
   --------
   Amp starts, stops, restarts and reloads configured services independent from
   init.d or any other operating system specific service management daemon. Amp
-  is "hands-on" in that it lets you directly ("dirtily") add and manipulate
-  services and their options without needing to deal with elaborate syntaxes
-  of sophisticated service managment systems.
+  is hackable in that it lets you directly add and manipulate services and their
+  options without needing to deal with elaborate syntaxes of sophisticated
+  service managment systems.
 
   Copyright & License
   -------------------
