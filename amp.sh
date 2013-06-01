@@ -131,35 +131,57 @@ if [[ $# == 0 ]]; then
 	usage
 fi
 
+COMMAND=$1
+
+
 # -----------------------------------------------------------
 # Main
 # -----------------------------------------------------------
-COMMAND=$1
 
 case $COMMAND in
 	status)
+		# If no specific service was given, all services status is shown.
+		if [[ $# == 2 ]]; then
+			SERVICE=$2
+		else
+			SERVICE="all"
+		fi
+
 		echo "Service        Status"
 		echo "---------------------------"
-		control_service all status
+		control_service $SERVICE status
 		;;
 	start)
-		OPTIONS="[quit]"
-		for _SERVICE in $SERVICES; do
-			if [[ $(control_service $_SERVICE status) != *"running" ]]; then
-				OPTIONS+=" $_SERVICE"
-			fi
-		done
-		PS3="Service to $COMMAND: "
-		select OPTION in $OPTIONS; do
-			if [[ $OPTION == *"quit"* ]]; then
-				break
-			else
-				control_service $OPTION $COMMAND
-			fi
-		done
+		if [[ $# == 2 ]]; then
+			SERVICE=$2
+			control_service $SERVICE $COMMAND
+		else
+			# If no specific service was given prompt to select.
+			OPTIONS="[quit]"
+			for _SERVICE in $SERVICES; do
+				if [[ $(control_service $_SERVICE status) != *"running" ]]; then
+					OPTIONS+=" $_SERVICE"
+				fi
+			done
+			PS3="Service to $COMMAND: "
+			select OPTION in $OPTIONS; do
+				if [[ $OPTION == *"quit"* ]]; then
+					break
+				else
+					control_service $OPTION $COMMAND
+				fi
+			done
+		fi
 		;;
 	stop | restart | reload)
-		control_service all $COMMAND
+		# If no specific service was given, all services are stopped/restarted/reloaded.
+		if [[ $# == 2 ]]; then
+			SERVICE=$2
+		else
+			SERVICE="all"
+		fi
+
+		control_service $SERVICE $COMMAND
 		;;
 	*)
 		echo "Error: Invalid option '$1'."
