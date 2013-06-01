@@ -143,10 +143,6 @@ case $COMMAND in
 		control_service all status
 		;;
 	start)
-		control_service apache $COMMAND
-		control_service mysql $COMMAND
-		echo
-
 		OPTIONS="[none]"
 		for _SERVICE in $SERVICES; do
 			if [[ $(control_service $_SERVICE status) != *"running" ]]; then
