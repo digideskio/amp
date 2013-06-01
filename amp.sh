@@ -143,20 +143,20 @@ case $COMMAND in
 		control_service all status
 		;;
 	start)
-		OPTIONS="[none]"
+		OPTIONS="[quit]"
 		for _SERVICE in $SERVICES; do
 			if [[ $(control_service $_SERVICE status) != *"running" ]]; then
 				OPTIONS+=" $_SERVICE"
 			fi
 		done
-		PS3="Any other service to $COMMAND: "
+		PS3="Service to $COMMAND: "
 		select OPTION in $OPTIONS; do
-			if [[ $OPTION != *"none"* ]]; then
+			if [[ $OPTION == *"quit"* ]]; then
+				break
+			else
 				control_service $OPTION $COMMAND
 			fi
-			break
 		done
-
 		;;
 	stop | restart | reload)
 		control_service all $COMMAND
