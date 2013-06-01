@@ -24,27 +24,6 @@ QUIET="n"
 CONFIG="$HOME/.amp"
 VERSION="0.5.0-head"
 
-# @FUNCTION: usage
-# @DESCRIPTION:
-# Outputs usage info and command-list
-usage() {
-	echo "Usage: $0 [options] <command>"
-	echo
-	echo "Commands:"
-	echo "  status    Show the status of all known services."
-	echo "  start     Starts selected currently not running services."
-	echo "  stop      Stops all running services."
-	echo "  restart   Restarts all running services."
-	echo "  reload    Reloads all running services."
-	echo
-	echo "Options:"
-	echo "  -V        Show current version."
-	echo "  -d        Enable debug output."
-	echo "  -q        Quiet mode, surpress most output except errors."
-	echo
-	exit 1
-}
-
 while getopts ":qdV" OPT; do
 	case $OPT in
 		q)  QUIET="y";;
@@ -84,6 +63,27 @@ _msg() {
 
 	local IFS=""
 	printf "[%5s] %s\n" "$status" "$(printf "$message" $@)"
+}
+
+# @FUNCTION: usage
+# @DESCRIPTION:
+# Outputs usage info and command-list
+usage() {
+	echo "Usage: $0 [options] <command>"
+	echo
+	echo "Commands:"
+	echo "  status    Show the status of all known services."
+	echo "  start     Starts selected currently not running services."
+	echo "  stop      Stops all running services."
+	echo "  restart   Restarts all running services."
+	echo "  reload    Reloads all running services."
+	echo
+	echo "Options:"
+	echo "  -V        Show current version."
+	echo "  -d        Enable debug output."
+	echo "  -q        Quiet mode, surpress most output except errors."
+	echo
+	exit 1
 }
 
 function control_service() {
