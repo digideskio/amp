@@ -13,35 +13,8 @@
 #
 
 # -----------------------------------------------------------
-# Environment settings
-# -----------------------------------------------------------
-set -o nounset
-
-# -----------------------------------------------------------
-# Standard Options & Argument parsing
-# -----------------------------------------------------------
-QUIET="n"
-CONFIG="$HOME/.amp"
-VERSION="0.5.0-head"
-
-while getopts ":qdV" OPT; do
-	case $OPT in
-		q)  QUIET="y";;
-		d)  set -x;;
-		V)  echo "AMP $VERSION by David Persson."; exit;;
-		\?) printf "Invalid option '%s'." $OPT; exit 1;;
-	esac
-done
-shift $(expr $OPTIND - 1)
-
-if [[ $# == 0 ]]; then
-	usage
-fi
-
-# -----------------------------------------------------------
 # Functions
 # -----------------------------------------------------------
-
 # @FUNCTION: msg*
 # @USAGE: [message] [replacement0..]
 # @DESCRIPTION:
@@ -113,6 +86,32 @@ function control_service() {
 		esac
 	fi
 }
+
+# -----------------------------------------------------------
+# Environment settings
+# -----------------------------------------------------------
+set -o nounset
+
+# -----------------------------------------------------------
+# Standard Options & Argument parsing
+# -----------------------------------------------------------
+QUIET="n"
+CONFIG="$HOME/.amp"
+VERSION="0.5.0-head"
+
+while getopts ":qdV" OPT; do
+	case $OPT in
+		q)  QUIET="y";;
+		d)  set -x;;
+		V)  echo "AMP $VERSION by David Persson."; exit;;
+		\?) printf "Invalid option '%s'." $OPT; exit 1;;
+	esac
+done
+shift $(expr $OPTIND - 1)
+
+if [[ $# == 0 ]]; then
+	usage
+fi
 
 # -----------------------------------------------------------
 # Service Configuration
