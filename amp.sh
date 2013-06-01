@@ -42,7 +42,13 @@ _msg() {
 # @DESCRIPTION:
 # Outputs usage info and command-list
 usage() {
-	echo "Usage: $0 [options] <command>"
+	echo "Usage: $0 [options] <command> [service]"
+	echo
+	echo "Service:"
+	echo "  all       Selects all known services."
+	for SERVICE in $SERVICES; do
+		printf "  %-9s Selects just %s.\n" $SERVICE $SERVICE
+	done
 	echo
 	echo "Commands:"
 	echo "  status    Show the status of all known services."
@@ -93,12 +99,24 @@ function control_service() {
 set -o nounset
 
 # -----------------------------------------------------------
-# Standard Options & Argument parsing
+# Basic Configuration
 # -----------------------------------------------------------
 QUIET="n"
 CONFIG="$HOME/.amp"
 VERSION="0.5.0-head"
 
+# -----------------------------------------------------------
+# Service Configuration
+# -----------------------------------------------------------
+SERVICES=""
+for file in $(ls $CONFIG/services/*.conf 2> /dev/null); do
+   source $file
+   SERVICES+=" $(basename -s .conf $file)"
+done
+
+# -----------------------------------------------------------
+# Argument parsing
+# -----------------------------------------------------------
 while getopts ":qdV" OPT; do
 	case $OPT in
 		q)  QUIET="y";;
@@ -112,15 +130,6 @@ shift $(expr $OPTIND - 1)
 if [[ $# == 0 ]]; then
 	usage
 fi
-
-# -----------------------------------------------------------
-# Service Configuration
-# -----------------------------------------------------------
-SERVICES=""
-for file in $(ls $CONFIG/services/*.conf 2> /dev/null); do
-	source $file
-	SERVICES+=" $(basename -s .conf $file)"
-done
 
 # -----------------------------------------------------------
 # Main
