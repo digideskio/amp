@@ -24,18 +24,11 @@ QUIET="n"
 CONFIG="$HOME/.amp"
 VERSION="0.5.0-head"
 
-while getopts ":qdV" OPT; do
-	case $OPT in
-		q)  QUIET="y";;
-		d)  set -x;;
-		V)  echo "AMP $VERSION by David Persson."; exit;;
-		\?) printf "Invalid option '%s'." $OPT; exit 1;;
-	esac
-done
-shift $(expr $OPTIND - 1)
-
-if [[ $# == 0 ]]; then
-	echo "Usage: amp.sh [options] <command>"
+# @FUNCTION: usage
+# @DESCRIPTION:
+# Outputs usage info and command-list
+usage() {
+	echo "Usage: $0 [options] <command>"
 	echo
 	echo "Commands:"
 	echo "  status    Show the status of all known services."
@@ -50,6 +43,20 @@ if [[ $# == 0 ]]; then
 	echo "  -q        Quiet mode, surpress most output except errors."
 	echo
 	exit 1
+}
+
+while getopts ":qdV" OPT; do
+	case $OPT in
+		q)  QUIET="y";;
+		d)  set -x;;
+		V)  echo "AMP $VERSION by David Persson."; exit;;
+		\?) printf "Invalid option '%s'." $OPT; exit 1;;
+	esac
+done
+shift $(expr $OPTIND - 1)
+
+if [[ $# == 0 ]]; then
+	usage
 fi
 
 # -----------------------------------------------------------
