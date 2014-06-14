@@ -44,11 +44,10 @@ _msg() {
 usage() {
 	echo "Usage: $0 [options] <command> [service]"
 	echo
-	echo "Service:"
-	echo "  all       Selects all known services."
-	for SERVICE in $SERVICES; do
-		printf "  %-9s Selects just %s.\n" $SERVICE $SERVICE
-	done
+	echo "Options:"
+	echo "  -V        Show current version."
+	echo "  -d        Enable debug output."
+	echo "  -q        Quiet mode, surpress most output except errors."
 	echo
 	echo "Commands:"
 	echo "  status    Show the status of all known services."
@@ -57,10 +56,11 @@ usage() {
 	echo "  restart   Restarts all running services."
 	echo "  reload    Reloads all running services."
 	echo
-	echo "Options:"
-	echo "  -V        Show current version."
-	echo "  -d        Enable debug output."
-	echo "  -q        Quiet mode, surpress most output except errors."
+	echo "Service:"
+	echo "  all       Selects all known services."
+	for SERVICE in $SERVICES; do
+		printf "  %-9s Selects just %s.\n" $SERVICE $SERVICE
+	done
 	echo
 	exit 1
 }
