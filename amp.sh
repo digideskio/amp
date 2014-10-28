@@ -84,12 +84,16 @@ function control_service() {
 				if [[ $(control_service $1 status) != *"running" ]]; then
 					msg "$action $1..."
 					eval "service_${1}" $2
+				else 
+					msgfail "Cannot $action, $1 is already running."
 				fi
 			;;
 			stop | restart | reload)
 				if [[ $(control_service $1 status) == *"running" ]]; then
 					msg "$action $1..."
 					eval "service_${1}" $2
+				else 
+					msgfail "Cannot $action, $1 is not running."
 				fi
 			;;
 		esac
