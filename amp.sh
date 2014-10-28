@@ -16,17 +16,17 @@
 # Functions
 # -----------------------------------------------------------
 # @FUNCTION: msg*
-# @USAGE: [message] [replacement0..]
+# @USAGE: <message> [replacement0..]
 # @DESCRIPTION:
 # Outputs status messages honoring QUIET flag.
-msg()     { if [[ $QUIET != "y" ]]; then _msg ""     "$@"; fi }
-msgok()   { if [[ $QUIET != "y" ]]; then _msg "ok"   "$@"; fi }
-msgskip() { if [[ $QUIET != "y" ]]; then _msg "skip" "$@"; fi }
-msgwarn() { _msg "warn" "$@" >&2; }
-msgfail() { _msg "fail" "$@" >&2; }
+msg()       { if [[ $QUIET != "y" ]];   then _msg ""     "$@"; fi }
+msgok()     { if [[ $QUIET != "y" ]];   then _msg "ok"   "$@"; fi }
+msgskip()   { if [[ $QUIET != "y" ]];   then _msg "skip" "$@"; fi }
+msgwarn()   { _msg "warn" "$@" >&2; }
+msgfail()   { _msg "fail" "$@" >&2; }
 
 # @FUNCTION: _msg
-# @USAGE: [status] [message] [replacement0..]
+# @USAGE: <status> <message> [replacement0..]
 # @DESCRIPTION:
 # Outputs status messages.
 _msg() {
@@ -35,7 +35,10 @@ _msg() {
 	shift 2
 
 	local IFS=""
-	printf "[%5s] %s\n" "$status" "$(printf "$message" $@)"
+	printf "[\e[1;34m%s\e[0m] [%5s] \e[1;32m%s\e[0m\n" \
+		"$(date +%T)" \
+		"$status" \
+		"$(printf "$message" $@)"
 }
 
 # @FUNCTION: usage
