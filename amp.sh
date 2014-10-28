@@ -154,10 +154,7 @@ case $COMMAND in
 		control_service $SERVICE status
 		;;
 	start)
-		if [[ $# == 2 ]]; then
-			SERVICE=$2
-			control_service $SERVICE $COMMAND
-		else
+		if [[ $# == 1 ]]; then
 			# If no specific service was given prompt to select.
 			OPTIONS="[quit]"
 			for _SERVICE in $SERVICES; do
@@ -173,17 +170,25 @@ case $COMMAND in
 					control_service $OPTION $COMMAND
 				fi
 			done
+		else
+			shift
+			while (( $# )); do
+				control_service $1 $COMMAND
+				shift
+			done
 		fi
 		;;
 	stop | restart | reload)
 		# If no specific service was given, all services are stopped/restarted/reloaded.
-		if [[ $# == 2 ]]; then
-			SERVICE=$2
+		if [[ $# == 1 ]]; then
+			control_service "all" $COMMAND
 		else
-			SERVICE="all"
+			shift
+			while (( $# )); do
+				control_service $1 $COMMAND
+				shift
+			done
 		fi
-
-		control_service $SERVICE $COMMAND
 		;;
 	*)
 		echo "Error: Invalid option '$1'."
